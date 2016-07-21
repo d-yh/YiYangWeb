@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd">
+		
+	<context:property-placeholder ignore-unresolvable="true" location="classpath*:/application.properties" />
+	
+	<!-- 扫描除了controller以外的所有 component -->
+	<context:component-scan base-package="com.yiyang.web">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	
+	<!-- 数据源配置, 使用Tomcat JDBC连接池 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<!-- Connection Info -->
+		<property name="driverClassName" value="${application.jdbc.driver}" />
+		<property name="url" value="${application.jdbc.url}" />
+		<property name="username" value="${application.jdbc.username}" />
+		<property name="password" value="${application.jdbc.password}" />
+		<!-- Connection Pooling Info -->
+		<property name="maxActive" value="${application.jdbc.pool.maxActive}" />
+		<property name="maxIdle" value="${application.jdbc.pool.maxIdle}" />
+		<property name="minIdle" value="${application.jdbc.pool.minIdle}" />
+		<property name="defaultAutoCommit" value="${application.jdbc.pool.defaultAutoCommit}" />
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+	       <property name="dataSource" ref="dataSource" /> 
+	       <property name="mapperLocations" value="classpath:com/yiyang/web/*/entity/*Mapper.xml" />  
+	       <property name="typeAliasesPackage" value="com.yiyang.web.*.entity" /> 
+	       <property name="plugins">
+	       	<array>
+	       		<bean class="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">
+	       			<property name="dialect">
+	       				<bean class="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect"></bean>
+	       			</property>
+	       		</bean>
+	       	</array>
+	       </property>  
+	</bean>  
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.yiyang.web.*.mapper" />
+	</bean>
+	
+	<bean id="transactionManager"
+	    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="dataSource" />	    
+	 </bean>
+	  
+	 <tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

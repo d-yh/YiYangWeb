@@ -1,0 +1,51 @@
+body{
+	background:#eff3f6;
+	margin:0;
+}
+
+.box {
+    background: #fefefe;
+    border: 1px solid #C3D4DB;
+    border-top: 1px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: rgba(0,0,0,0.15) 0 0 1px;
+    -webkit-box-shadow: rgba(0,0,0,0.15) 0 0 1px;
+    box-shadow: rgba(0,0,0,0.15) 0 0 1px;
+    color: #444;
+    font: normal 12px/14px Arial, Helvetica, Sans-serif;
+    margin: 0 auto 30px;
+    overflow: hidden;
+}
+
+form.box.login{	
+	font: 14px/22px Arial, Helvetica, Sans-serif;
+    width: 332px;
+    position: absolute;
+    left: 50%;
+    top: 50%;  
+    margin: -130px 0 0 -166px;
+}
+
+.loginDiv{
+	background: #fefefe;
+    padding: 10px 20px;
+}
+
+div.ui.left.icon.input{
+	width: 100%;
+}
+
+.ui.primary.button {
+    width: 100%;
+    background-color: #2185d0;
+    color: #ffffff;
+    text-shadow: none;
+    background-image: none;
+}
+
+.checkDiv{
+	padding-left:20px;
+}
+

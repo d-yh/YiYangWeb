@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+xmlns:beans="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+	<http use-expressions="true" authentication-manager-ref="authenticationManager">
+		
+	    <logout delete-cookies="JSESSIONID" logout-url="/logout" logout-success-url="/login"  />		
+		<form-login 
+		 default-target-url="/home"  login-page='/login.jsp'		 
+		/>		
+	</http>
+	
+	
+	<authentication-manager id="authenticationManager" alias="authenticationManager">		
+		<authentication-provider user-service-ref="userService">
+			<password-encoder ref="passwordEncoder"/>
+		</authentication-provider>
+	</authentication-manager>
+	
+	<beans:bean id="userService" class="com.yiyang.web.account.service.impl.AccountService">	
+	</beans:bean>
+	<!-- 密码加密接口 -->
+	<beans:bean id="passwordEncoder"
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder"></beans:bean>
+</beans:beans>
